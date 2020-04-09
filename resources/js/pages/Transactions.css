@@ -1,0 +1,37 @@
+.container__table {
+    margin-top:8px;
+    height: 290px;
+    overflow-y: scroll;  /* or auto */
+    padding: 10px 15px;
+    border: 2px solid  lightgray;
+    width: 85%;
+  }
+  .transaction-flex{
+    display: flex;
+    flex-direction: row;
+    padding-top:6px;
+    align-items: center;
+  }
+
+  .transaction-item{
+      font-size: 25px;
+      color: blue;
+  }
+
+.trigger-button{
+    padding-left: 15px;
+}
+
+
+.transaction-container, .total-amount{
+    margin-left: 20px;
+}
+
+div.flex-1:nth-child(2){
+    display: unset;
+}
+
+.total-amount{
+    color: blue;
+    font-size:25px;
+}
