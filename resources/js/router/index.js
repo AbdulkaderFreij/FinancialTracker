@@ -6,8 +6,8 @@ import Register from '../pages/auth/register';
 import ForgotPassword from '../pages/auth/forgot-password';
 import ResetPassword from '../pages/auth/reset-password';
 import NotFound from '../pages/404';
-import Home from '../pages/home';
-import Profile from '../pages/profile';
+import Dashboard from '../pages/home';
+import Profile from '../pages/Profile';
 import AuthRoute from './auth-route';
 import GuestRoute from './guest-route';
 import { useAuth } from '../context/auth';
@@ -27,7 +27,7 @@ function App () {
             <GuestRoute path="/login" component={Login} title="login"/>
             <GuestRoute path="/forgot-password" component={ForgotPassword} title="forgot password"/>
             <GuestRoute path="/password/reset/:token" component={ResetPassword} title="reset password"/>
-            <AuthRoute path="/home" component={Home} title="home"/>
+            <AuthRoute path="/dashboard" component={Dashboard} title="dashboard"/>
             <AuthRoute path="/transactions" component={Transactions} title="transactions"/>
             <AuthRoute path="/profile/:id" component={Profile} title="profile"/>
             <Route component={NotFound}/>

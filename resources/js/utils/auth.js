@@ -1,6 +1,6 @@
 const authToken = 'auth_token';
 const intendedUrl = 'intendedUrl';
-const defaultIntendedUrl = '/home';
+const defaultIntendedUrl = '/dashboard';
 
 export const getToken = () => window.localStorage.getItem(authToken);
 

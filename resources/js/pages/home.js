@@ -1,7 +1,7 @@
 import React from 'react';
 import {useAuth} from '../context/auth';
 
-function Home () {
+function Dashboard () {
   let { currentUser } = useAuth();
 
   return (
@@ -11,4 +11,4 @@ function Home () {
   );
 }
 
-export default Home;
+export default Dashboard;

@@ -25,7 +25,7 @@ function AuthNav () {
           <ul className="list-reset flex items-center">
             <li>
               <NavLink
-                to="/home"
+                to="/dashboard"
                 activeClassName="font-bold"
                 className="text-white no-underline text-indigo">Financial Tracker
               </NavLink>
@@ -50,7 +50,7 @@ function AuthNav () {
 
         <div
           className={`right lg:flex pt-8 lg:pt-0 right fixed lg:relative w-full lg:w-auto h-screen lg:h-auto ${hideMobileNav ? 'mobile-hidden' : ''}`}>
-          <ul className="mt-8 py-8 lg:py-0 lg:mt-0 list-reset flex items-center flex-col lg:flex-row">
+          <ul className="mt-8 py-8 lg:py-0 lg:mt-0 list-reset flex items-center bg-indigo-900 flex-col lg:flex-row">
             <li
               onClick={closeMobileNav}
               className="px-4 py-3 lg:py-0">

@@ -111,43 +111,6 @@ export default class Transactions extends Component {
       }
 
 
-      // addTransaction() {
-      //   let newList = this.state.list;
-      //   const input = {
-      //     title:this.state.title,
-      //     description:this.state.description,
-      //     start_date: this.state.start_date,
-      //     end: this.state.end_date,
-      //     type: this.state.type,
-      //     amount: this.state.amount,
-      //     interval:this.state.interval,
-      //     currency: this.state.currentValueCurrency,
-      //     category: this.state.currentValue
-      //   };
-      //   console.log(input);
-      //   newList.push(input);
-      //   this.setState({
-      //     list: newList,
-      //     isOpen: false,
-      //     start_date: "",
-      //     end_date: "",
-      //     type: "",
-      //     amount: "",
-      //     title:"",
-      //     description:"",
-      //     interval:"",
-      //     currency: currency,
-      //     category: category
-      //   });
-      // }
-
-      // deleteTransaction = id => {
-      //   console.log(id);
-      //   let arr = this.state.list;
-      //   const result = arr.filter((transaction, index) => index !== id);
-      //   this.setState({ list: result });
-      // };
-
           deleteTransaction=(id)=>{
             deleteItemTransaction(id)
             this.getAll();
@@ -173,37 +136,6 @@ export default class Transactions extends Component {
           editingIndex: id
         });
       };
-      // updateTransaction = () => {
-      //   this.setState({
-      //     list: this.state.list.map((transaction, index) =>
-      //       index === this.state.editingIndex
-      //         ? {
-      //             ...transaction,
-      //             start_date: this.state.start_date,
-      //             end_date: this.state.end_date,
-      //             type: this.state.type,
-      //             amount: this.state.amount,
-      //             title:this.state.title,
-      //             description:this.state.description,
-      //             interval:this.state.interval,
-      //             currency: this.state.currentValueCurrency,
-      //             category: this.state.currentValue
-      //           }
-      //         : transaction
-      //     ),
-      //     editing: false,
-      //     isOpen: false,
-      //     start_date: "",
-      //     end_date: "",
-      //     type: "",
-      //     title:"",
-      //     description:"",
-      //     amount: "",
-      //     interval:"",
-      //     currency: currency,
-      //     category: category
-      //   });
-      // };
 
 
       updateTransaction=()=>{
@@ -415,12 +347,7 @@ export default class Transactions extends Component {
             {this.state.list.map((transaction, index) => (
               <List key={index}>
                 <List.Item>
-                  <TransactionsTable
-                    id={index}
-                    value={transaction}
-                    deleteTransaction={this.deleteTransaction}
-                    editTransaction={this.editTransaction}
-                  />
+                  <TransactionsTable id={index} value={transaction} deleteTransaction={this.deleteTransaction} editTransaction={this.editTransaction} />
                 </List.Item>
               </List>
             ))}
