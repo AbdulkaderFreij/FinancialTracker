@@ -32,11 +32,11 @@ Route::name('api.')->namespace('Api')->group(function () {
             Route::post('logout', 'LogoutController@logout')->name('logout');
             Route::get('/currencies', 'CurrencyController@index')->name('currencies.all');
 
-Route::get('/transactions', 'TransactionController@index')->name('transactions.all');
-Route::post('/transactions', 'TransactionController@store')->name('transactions.store');
-Route::get('/transactions/{transaction}', 'TransactionController@show')->name('transactions.show');
-Route::put('/transactions/{transaction}', 'TransactionController@update')->name('transactions.update');
-Route::delete('/transactions/{transaction}', 'TransactionController@destroy')->name('transactions.destroy');
+Route::get('transactions', 'TransactionController@index')->name('transactions.all');
+Route::post('transactions', 'TransactionController@store')->name('transactions.store');
+Route::get('transactions/{transaction}', 'TransactionController@show')->name('transactions.show');
+Route::put('transactions/{transaction}', 'TransactionController@update')->name('transactions.update');
+Route::delete('transactions/{transaction}', 'TransactionController@destroy')->name('transactions.destroy');
 
 Route::get('/categories', 'CategoryController@index')->name('categories.all');
 Route::post('/categories', 'CategoryController@store')->name('categories.store');
