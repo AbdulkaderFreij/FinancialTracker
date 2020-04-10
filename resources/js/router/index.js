@@ -13,6 +13,8 @@ import GuestRoute from './guest-route';
 import { useAuth } from '../context/auth';
 import FullPageSpinner from '../components/full-page-spinner';
 import Transactions from '../pages/Transactions';
+import Goals from '../pages/Goals';
+// import Reports from '../pages/Reports';
 
 function App () {
   let { initializing } = useAuth();
@@ -29,6 +31,8 @@ function App () {
             <GuestRoute path="/password/reset/:token" component={ResetPassword} title="reset password"/>
             <AuthRoute path="/dashboard" component={Dashboard} title="dashboard"/>
             <AuthRoute path="/transactions" component={Transactions} title="transactions"/>
+            <AuthRoute path="/goals" component={Goals} title="goals"/>
+            {/* <AuthRoute path="/reports" component={Reports} title="reports"/> */}
             <AuthRoute path="/profile/:id" component={Profile} title="profile"/>
             <Route component={NotFound}/>
           </Switch>

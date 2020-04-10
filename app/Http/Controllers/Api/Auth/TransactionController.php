@@ -26,10 +26,15 @@ class TransactionController extends Controller
             'end_date' => '',
             'interval' => '',
             'type' => 'required',
+            'currencies_id' => 'required',
+            'categories_id'=>'required'
         ]);
-        $transaction = Transaction::create($request->all());
+        $inputs = $request->toArray();
+        $inputs['users_id'] = $request->user()->id;
+        $transaction = Transaction::create($inputs);
         return response()->json(['message'=> 'transaction created',
         'transaction' => $transaction]);
+      //  return $request->all();
     }
 
     public function show(Transaction $transaction)

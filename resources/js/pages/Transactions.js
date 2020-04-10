@@ -22,6 +22,7 @@ export default class Transactions extends Component {
         super(props);
         this.state = {
           list: [],
+
           start_date: "",
           end_date:"",
           type: "",
@@ -118,7 +119,7 @@ export default class Transactions extends Component {
 
       editTransaction = id => {
         const transaction = this.state.list.find(
-          (transaction, index) => index === id
+          (transaction, index) => transaction.id === id
         );
         console.log(id);
         this.setState({
@@ -139,7 +140,7 @@ export default class Transactions extends Component {
 
 
       updateTransaction=()=>{
-        updateItemTransaction(this.state.title, this.state.id,this.state.title,this.state.description,this.state.start_date,this.state.end_date,this.state.type,this.state.amount,this.state.interval,this.state.currentValueCurrency,this.state.currentValue).then(()=>{
+        updateItemTransaction(this.state.title,this.state.description,this.state.start_date,this.state.end_date,this.state.type,this.state.amount,this.state.interval,this.state.currentValueCurrency,this.state.currentValue,this.state.editingIndex).then(()=>{
             this.getAll();
         })
         this.setState({ editing: false, isOpen: false,start_date: "",end_date: "",type: "",amount: "",title:"",description:"",interval:"",currency: currency,category: category })
@@ -345,9 +346,9 @@ export default class Transactions extends Component {
           <div className="container__table">
           <Transition.Group animation='scale' duration={500}>
             {this.state.list.map((transaction, index) => (
-              <List key={index}>
+              <List key={transaction.id}>
                 <List.Item>
-                  <TransactionsTable id={index} value={transaction} deleteTransaction={this.deleteTransaction} editTransaction={this.editTransaction} />
+                  <TransactionsTable id={transaction.id} value={transaction} deleteTransaction={this.deleteTransaction} editTransaction={this.editTransaction} />
                 </List.Item>
               </List>
             ))}
