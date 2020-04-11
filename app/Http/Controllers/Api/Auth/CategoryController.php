@@ -23,7 +23,9 @@ class CategoryController extends Controller
         $request->validate([
             'name' => 'required',
         ]);
-        $category = Category::create($request->all());
+        $inputs = $request->toArray();
+        $inputs['users_id'] = $request->user()->id;
+        $category = Category::create($inputs);
         return response()->json(['message'=> 'category created',
         'category' => $category]);
     }

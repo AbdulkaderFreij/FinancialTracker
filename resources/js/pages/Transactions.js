@@ -3,7 +3,7 @@ import TransactionsTable from "../components/TransactionsTable";
 import { Header, Image, Modal, Transition,Form, Dropdown, Input, List, Button} from "semantic-ui-react";
 import "./Transactions.css";
 import {getTransactions, addItemTransaction, deleteItemTransaction, updateItemTransaction} from '../../js/api/functionsList';
-
+import logo from '../images/logo.svg';
 const category = [
   { key: "groceries", text: "groceries", value: "groceries" },
   { key: "salary", text: "salary", value: "salary" },
@@ -22,7 +22,6 @@ export default class Transactions extends Component {
         super(props);
         this.state = {
           list: [],
-
           start_date: "",
           end_date:"",
           type: "",
@@ -214,7 +213,7 @@ export default class Transactions extends Component {
                   <Image
                     wrapped
                     size="medium"
-                    src="https://react.semantic-ui.com/images/avatar/large/rachel.png"
+                    src={logo}
                   />
                   <Modal.Description>
                     <Header>Add a Transaction</Header>

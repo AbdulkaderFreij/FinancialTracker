@@ -1,7 +1,7 @@
 import React from 'react';
 import {useAuth} from '../context/auth';
 
-function Dashboard () {
+const Dashboard = () => {
   let { currentUser } = useAuth();
 
   return (
@@ -9,6 +9,6 @@ function Dashboard () {
       <h1>Welcome back {currentUser.name}</h1>
     </div>
   );
-}
+};
 
 export default Dashboard;

@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import axios from 'axios';
 import { getToken } from '../utils/auth';
 
@@ -18,6 +19,17 @@ export const getCategories = () => {
 
   return axios
     .get('/api/categories', {
+      headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token}
+    })
+    .then(res => {
+      return res.data;
+    });
+};
+
+export const getCurrencies = () => {
+  const token = getToken();
+  return axios
+    .get('/api/currencies', {
       headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token}
     })
     .then(res => {

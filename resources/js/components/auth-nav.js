@@ -27,7 +27,7 @@ function AuthNav () {
               <NavLink
                 to="/dashboard"
                 activeClassName="font-bold"
-                className="text-white no-underline text-indigo">Financial Tracker
+                className="text-white font-bold no-underline text-indigo">Financial Tracker
               </NavLink>
             </li>
           </ul>
