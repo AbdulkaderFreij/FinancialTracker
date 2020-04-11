@@ -18,7 +18,10 @@ class CreateCurrenciesTable extends Migration
             $table->string('country')->nullable();
             $table->string('symbol')->nullable();
             $table->string('code')->nullable();
+            $table->unsignedBigInteger('users_id');
+
             $table->timestamps();
+            $table->index('users_id');
 
         });
     }

@@ -7,18 +7,6 @@ import logo from '../images/logo.svg';
 import { getCategories, addItemCategory, getCurrencies } from '../api/functionsList';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-// const category = [
-//   { key: "groceries", text: "groceries", value: "groceries" },
-//   { key: "salary", text: "salary", value: "salary" },
-//   { key: "rent", text: "rent", value: "rent" },
-//   { key: "car loan", text: "car loan", value: "car loan" },
-//   { key: "mobile bill", text: "mobile bill", value: "mobile bill" }
-// ];
-// const currency = [
-//   { key: "USD", currency: "USD", value: "USD", text: "USD", symbol: "$" },
-//   { key: "EUR", currency: "EUR", value: "EUR", text: "EUR", symbol: "€" },
-//   { key: "JPY", currency: "JPY", value: "JPY", text: "JPY", symbol: "¥" }
-// ];
 
 export default class Transactions extends Component {
     constructor(props) {
@@ -40,7 +28,6 @@ export default class Transactions extends Component {
           isOpen: false,
         };
       }
-
 
       componentDidMount(){
         this.getAll();
@@ -69,7 +56,6 @@ export default class Transactions extends Component {
           start_date: date
         });
       };
-
 
     endDate = date => {
         this.setState({
@@ -116,14 +102,12 @@ export default class Transactions extends Component {
       handleChangeCurrency = (e, { value }) =>
         this.setState({ currentValueCurrency: value });
 
-
         addTransaction(){
           addItemTransaction(this.state.title,this.state.description,this.state.start_date,this.state.end_date,this.state.type,this.state.amount,this.state.interval,this.state.currentValueCurrency,this.state.currentValue ).then(()=>{
               this.getAll()
           })
           this.setState({isOpen: false,start_date: "",end_date: "",type: "",amount: "",title:"",description:"",interval:""})
       }
-
 
           deleteTransaction=(id)=>{
             deleteItemTransaction(id)
@@ -150,7 +134,6 @@ export default class Transactions extends Component {
         });
       };
 
-
       updateTransaction=()=>{
         updateItemTransaction(this.state.title,this.state.description,this.state.start_date.toLocaleDateString(),this.state.end_date,this.state.type,this.state.amount,this.state.interval,this.state.currentValueCurrency,this.state.currentValue,this.state.editingIndex).then(()=>{
             this.getAll();
@@ -161,16 +144,13 @@ export default class Transactions extends Component {
   render() {
     function sumProperty(arr) {
       return arr.reduce((total, obj) => {
-        if (typeof obj["type"] === "string") {
-         // console.log( obj["type"]);
-          if (
-            obj["type"] === "Fixed Income" ||
-            obj["type"] === "Recurring Income"
-          )
+        if (typeof obj["type"] === "string") 
+        {
+          if (obj["type"] === "Fixed Income" || obj["type"] === "Recurring Income")
             return total + obj["amount"];
           else return total - obj["amount"];
         }
-        return total;// + obj[type];
+        return total;
       }, 0);
     }
     let totalAmount = sumProperty(this.state.list).toFixed(2);
@@ -179,19 +159,16 @@ export default class Transactions extends Component {
     function sumIncome(arr) {
       return arr.reduce((total, obj) => {
         console.log( "income", obj["type"]);
-        if (typeof obj["type"] === "string") {
-          if (
-            obj["type"] === "Fixed Income" ||
-            obj["type"] === "Recurring Income"
-          ){
+        if (typeof obj["type"] === "string") 
+        {
+          if (obj["type"] === "Fixed Income" || obj["type"] === "Recurring Income")
+          {
             console.log(total + obj["amount"])
             return total + Number(obj["amount"]);
           }
-           // return total + Number(obj["amount"]);
           else return total;
         }
-        else
-        return total ;//+ obj[type];
+        else return total;
       }, 0);
     }
     let totalIncome = sumIncome(this.state.list).toFixed(2);
@@ -199,16 +176,13 @@ export default class Transactions extends Component {
 
     function sumExpense(arr) {
       return arr.reduce((total, obj) => {
-        if (typeof obj["type"] === "string") {
-          if (
-            obj["type"] === "Fixed Expense" ||
-            obj["type"] === "Recurring Expense"
-          )
+        if (typeof obj["type"] === "string") 
+        {
+          if (obj["type"] === "Fixed Expense" || obj["type"] === "Recurring Expense")
             return total + obj["amount"];
           else return total;
         }
-        else
-        return total;// + obj[type];
+        else return total;
       }, 0);
     }
     let totalExpense = sumExpense(this.state.list).toFixed(2);
@@ -220,145 +194,53 @@ export default class Transactions extends Component {
           <div className="transaction-flex">
             <h1 className="transaction-item">Transactions</h1>
             <div className="trigger-button">
-              <Modal
-                trigger={<Button content="New" icon="edit" />}
-                centered={false}
-                on="click"
-                open={this.state.isOpen}
-                onClose={this.handleClose}
-                onOpen={this.handleOpen}
-              >
+              <Modal trigger={<Button content="New" icon="edit" />} centered={false} on="click" open={this.state.isOpen} onClose={this.handleClose} onOpen={this.handleOpen}>
                 <Modal.Header>Transactions</Modal.Header>
                 <Modal.Content image>
-                  <Image
-                    wrapped
-                    size="medium"
-                    src={logo}
-                  />
+                  <Image wrapped size="medium" src={logo}/>
                   <Modal.Description>
                     <Header>Add a Transaction</Header>
-                    <Form
-                      onSubmit={event => {
-                        event.preventDefault();
-                      }}
-                    >
-                      {/* <Form.Field>
-                        <input
-                        placeholder="Enter Start Date"
-                          type="datetime-local"
-                          value={this.state.start_date}
-                          onChange={e => this.startDate(e)}/>
-                      </Form.Field> */}
-
-                      {/* */}
+                    <Form onSubmit={event => {event.preventDefault();}}>
                        <Form.Field>
-                       <DatePicker
-                      dateFormat="dd/MM/yyyy"
-                      placeholderText="Click to select a date"
-                        selected={this.state.start_date}
-                        onChange={e => this.startDate(e)}/>
+                       <DatePicker dateFormat="dd/MM/yyyy" placeholderText="Click to select a date" selected={this.state.start_date} onChange={e => this.startDate(e)}/>
                       </Form.Field>
-
                       <Form.Field>
-                       <DatePicker
-                      dateFormat="dd/MM/yyyy"
-                      placeholderText="Click to select a date"
-                        selected={this.state.end_date}
-                        onChange={e => this.endDate(e)}/>
+                       <DatePicker dateFormat="dd/MM/yyyy" placeholderText="Click to select a date" selected={this.state.end_date} onChange={e => this.endDate(e)}/>
                       </Form.Field>
-
                       <Form.Field>
-                        <Input
-                          list="type"
-                          placeholder="Choose type..."
-                          value={this.state.type}
-                          onChange={e => this.type(e)}
-                        />
+                        <Input list="type" placeholder="Choose type..." value={this.state.type} onChange={e => this.type(e)}/>
                         <datalist id="type">
                           <option value="Fixed Income" />
                           <option value="Recurring Income" />
                           <option value="Fixed Expense" />
                           <option value="Recurring Expense" />
                         </datalist>
-
                       </Form.Field>
-                      {this.state.isRecurring ? (<Form.Field>
-                        <input
-                          type="number"
-                          placeholder="Enter an interval"
-                          value={this.state.interval}
-                          onChange={e => this.interval(e)}
-                        />
-
+                      {this.state.isRecurring ? (
+                      <Form.Field>
+                        <input type="number" placeholder="Enter an interval" value={this.state.interval} onChange={e => this.interval(e)}/>
                       </Form.Field>) : null}
                         <Form.Field>
-                        <Dropdown
-                          options={this.state.categories}
-                          placeholder="Choose a Category"
-                          search
-                          selection
-                          fluid
-                          allowAdditions
-                          value={this.state.currentValue}
-                          onAddItem={this.handleAddition}
-                          onChange={this.handleChange}
-                        />
-
+                        <Dropdown options={this.state.categories} placeholder="Choose a Category" search selection fluid allowAdditions value={this.state.currentValue} onAddItem={this.handleAddition} onChange={this.handleChange}/>
                       </Form.Field>
                       <Form.Field>
-                        <input
-                          type="number"
-                          placeholder="Enter an amount"
-                          value={this.state.amount}
-                          onChange={e => this.amount(e)}
-                        />
+                        <input type="number" placeholder="Enter an amount" value={this.state.amount} onChange={e => this.amount(e)}/>
                       </Form.Field>
-
                       <Form.Field>
-                        <input
-                          type="text"
-                          placeholder="Enter a title"
-                          value={this.state.title}
-                          onChange={e => this.title(e)}
-                        />
+                        <input type="text" placeholder="Enter a title" value={this.state.title} onChange={e => this.title(e)}/>
                       </Form.Field>
-
                       <Form.Field>
-                        <input
-                          type="text"
-                          placeholder="Enter a description"
-                          value={this.state.description}
-                          onChange={e => this.description(e)}
-                        />
+                        <input type="text" placeholder="Enter a description" value={this.state.description} onChange={e => this.description(e)}/>
                       </Form.Field>
-
                       <Form.Field>
-                        <Dropdown
-                          options={this.state.currencies}
-                          placeholder="Choose a currency"
-                          search
-                          selection
-                          fluid
-                          value={this.state.currentValueCurrency}
-                          onChange={this.handleChangeCurrency}
-                        />
+                        <Dropdown options={this.state.currencies} placeholder="Choose a currency" search selection fluid value={this.state.currentValueCurrency} onChange={this.handleChangeCurrency}/>
                       </Form.Field>
                       {this.state.editing ? (
-                        <Button
-                          negative
-                          onClick={() =>
-                            this.updateTransaction() && this.handleClose
-                          }
-                        >
+                        <Button negative onClick={() => this.updateTransaction() && this.handleClose}>
                           Update
                         </Button>
                       ) : (
-                        <Button
-                          positive
-                          onClick={() =>
-                            this.addTransaction() && this.handleClose
-                          }
-                        >
+                        <Button positive onClick={() => this.addTransaction() && this.handleClose}>
                           Add
                         </Button>
                       )}
