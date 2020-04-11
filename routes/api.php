@@ -18,6 +18,7 @@ Route::name('api.')->namespace('Api')->group(function () {
         Route::namespace('Auth')->group(function () {
             Route::post('login', 'LoginController')->name('login');
             Route::post('register', 'RegisterController')->name('register');
+            Route::get('/currencies', 'CurrencyController@index')->name('currencies.all');
 
             // Password Reset Routes...
             Route::post('password/email', 'ForgotPasswordController@sendResetLinkEmail');
@@ -30,7 +31,6 @@ Route::name('api.')->namespace('Api')->group(function () {
         Route::namespace('Auth')->group(function () {
             Route::get('me', 'MeController@me')->name('me');
             Route::post('logout', 'LogoutController@logout')->name('logout');
-            Route::get('/currencies', 'CurrencyController@index')->name('currencies.all');
 
 Route::get('/transactions', 'TransactionController@index')->name('transactions.all');
 Route::post('/transactions', 'TransactionController@store')->name('transactions.store');

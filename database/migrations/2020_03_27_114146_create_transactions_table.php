@@ -22,8 +22,8 @@ class CreateTransactionsTable extends Migration
             $table->string('title');
             $table->double('amount');
             $table->text('description');
-            $table->timestamp('start_date');
-            $table->timestamp('end_date')->nullable();
+            $table->string('start_date');
+            $table->string('end_date')->nullable();
             $table->string('interval')->nullable();
             $table->string('type');
 

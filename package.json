@@ -39,6 +39,7 @@
     "dependencies": {
         "axios": "^0.19.2",
         "laravel-mix-tailwind": "^0.1.0",
+        "react-datepicker": "^2.14.1",
         "semantic-ui-react": "^0.88.2"
     }
 }

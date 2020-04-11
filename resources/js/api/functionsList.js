@@ -22,18 +22,33 @@ export const getCategories = () => {
       headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token}
     })
     .then(res => {
-      return res.data;
+      const categories = res.data.map(category => {
+        return {
+          key: category.id,
+          text: category.name,
+          value: category.id
+        };
+      });
+      return categories;
     });
 };
 
 export const getCurrencies = () => {
   const token = getToken();
+
   return axios
     .get('/api/currencies', {
       headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token}
     })
     .then(res => {
-      return res.data;
+      const currencies = res.data.map(currency => {
+        return {
+          key: currency.id,
+          text: currency.symbol,
+          value: currency.id
+        };
+      });
+      return currencies;
     });
 };
 
@@ -45,7 +60,7 @@ export const addItemTransaction = (title, description, start_date, end_date, typ
     .post('/api/transactions', {
       title: title,
       description: description,
-      start_date: '2020-12-12',
+      start_date: start_date,
       end_date: end_date,
       type: type,
       amount: amount,
@@ -73,6 +88,7 @@ export const addItemCategory = (name) => {
     })
     .then(res => {
       console.log(res);
+      return res.data.category;
     });
 };
 
@@ -114,7 +130,7 @@ export const updateItemTransaction = (title, description, start_date, end_date, 
     .put(`/api/transactions/${id}`, {
       title: title,
       description: description,
-      start_date: '2020/05/02',
+      start_date: start_date,
       end_date: end_date,
       type: type,
       amount: amount,

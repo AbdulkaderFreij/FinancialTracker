@@ -4,50 +4,57 @@ import { Header, Image, Modal, Transition,Form, Dropdown, Input, List, Button} f
 import "./Transactions.css";
 import {getTransactions, addItemTransaction, deleteItemTransaction, updateItemTransaction} from '../../js/api/functionsList';
 import logo from '../images/logo.svg';
-const category = [
-  { key: "groceries", text: "groceries", value: "groceries" },
-  { key: "salary", text: "salary", value: "salary" },
-  { key: "rent", text: "rent", value: "rent" },
-  { key: "car loan", text: "car loan", value: "car loan" },
-  { key: "mobile bill", text: "mobile bill", value: "mobile bill" }
-];
-const currency = [
-  { key: "USD", currency: "USD", value: "USD", text: "USD", symbol: "$" },
-  { key: "EUR", currency: "EUR", value: "EUR", text: "EUR", symbol: "€" },
-  { key: "JPY", currency: "JPY", value: "JPY", text: "JPY", symbol: "¥" }
-];
+import { getCategories, addItemCategory, getCurrencies } from '../api/functionsList';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+// const category = [
+//   { key: "groceries", text: "groceries", value: "groceries" },
+//   { key: "salary", text: "salary", value: "salary" },
+//   { key: "rent", text: "rent", value: "rent" },
+//   { key: "car loan", text: "car loan", value: "car loan" },
+//   { key: "mobile bill", text: "mobile bill", value: "mobile bill" }
+// ];
+// const currency = [
+//   { key: "USD", currency: "USD", value: "USD", text: "USD", symbol: "$" },
+//   { key: "EUR", currency: "EUR", value: "EUR", text: "EUR", symbol: "€" },
+//   { key: "JPY", currency: "JPY", value: "JPY", text: "JPY", symbol: "¥" }
+// ];
 
 export default class Transactions extends Component {
     constructor(props) {
         super(props);
         this.state = {
           list: [],
-          start_date: "",
-          end_date:"",
+          start_date: new Date(),
+          end_date: null,
           type: "",
           amount: "",
           title:"",
           description:"",
           interval: "",
           isRecurring: false,
-          category: category,
-          currency: currency,
+          categories: [],
+          currencies: [],
           editing: false,
           editingIndex: -1,
-          isOpen: false
+          isOpen: false,
         };
       }
+
 
       componentDidMount(){
         this.getAll();
     }
 
-
-    getAll= () => {
-      getTransactions().then(data=>{
-          this.setState({start_date:'',end_date:'',type:'',amount:'',title:'',description:'',interval:'',category:category, currency:currency, list:[...data]}, ()=>console.log(this.state.list))
-      })
-    }
+    getAll=async () => {
+        const categories =  await getCategories();
+        const currencies = await getCurrencies();
+        console.log(currencies);
+        console.log(categories);
+         getTransactions().then(data=>{
+             this.setState({start_date:'',end_date:'',type:'',amount:'',title:'',description:'',interval:'', list:[...data], categories, currencies}, ()=>console.log(this.state.list))
+         })
+       }
 
       handleOpen = () => {
         this.setState({ isOpen: true });
@@ -57,15 +64,19 @@ export default class Transactions extends Component {
         this.setState({ isOpen: false });
       };
 
-      startDate = e => {
-        e.preventDefault();
-        this.setState({ start_date: e.target.value });
+      startDate = date => {
+        this.setState({
+          start_date: date
+        });
       };
 
-      endDate = e => {
-        e.preventDefault();
-        this.setState({ end_date: e.target.value });
+
+    endDate = date => {
+        this.setState({
+          end_date: date
+        });
       };
+
       type = e => {
         e.preventDefault();
         this.setState({ type: e.target.value });
@@ -92,13 +103,16 @@ export default class Transactions extends Component {
         this.setState({ interval: e.target.value });
       };
 
-      handleAddition = (e, { value }) => {
+      handleAddition = async (e, { value }) => {
+          const category = await addItemCategory(value);
+
         this.setState(prevState => ({
-          category: [{ text: value, value }, ...prevState.category]
+          categories: [{ key: category.id, text: category.name, value: category.id }, ...prevState.categories]
         }));
       };
 
       handleChange = (e, { value }) => this.setState({ currentValue: value });
+
       handleChangeCurrency = (e, { value }) =>
         this.setState({ currentValueCurrency: value });
 
@@ -107,7 +121,7 @@ export default class Transactions extends Component {
           addItemTransaction(this.state.title,this.state.description,this.state.start_date,this.state.end_date,this.state.type,this.state.amount,this.state.interval,this.state.currentValueCurrency,this.state.currentValue ).then(()=>{
               this.getAll()
           })
-          this.setState({isOpen: false,start_date: "",end_date: "",type: "",amount: "",title:"",description:"",interval:"",currency: currency,category: category})
+          this.setState({isOpen: false,start_date: "",end_date: "",type: "",amount: "",title:"",description:"",interval:""})
       }
 
 
@@ -118,80 +132,86 @@ export default class Transactions extends Component {
 
       editTransaction = id => {
         const transaction = this.state.list.find(
-          (transaction, index) => transaction.id === id
+          (transaction) => transaction.id === id
         );
         console.log(id);
         this.setState({
           editing: true,
           isOpen: true,
-          start_date: transaction.start_date,
-          end_date: transaction.end_date,
+          start_date: new Date(transaction.start_date),
+          end_date: transaction.end_date !== null? new Date(transaction.end_date): null,
           type: transaction.type,
           amount: transaction.amount,
           title:transaction.title,
           description:transaction.description,
           interval: transaction.interval,
           currency: currency,
-          category: category,
           editingIndex: id
         });
       };
 
 
       updateTransaction=()=>{
-        updateItemTransaction(this.state.title,this.state.description,this.state.start_date,this.state.end_date,this.state.type,this.state.amount,this.state.interval,this.state.currentValueCurrency,this.state.currentValue,this.state.editingIndex).then(()=>{
+        updateItemTransaction(this.state.title,this.state.description,this.state.start_date.toLocaleDateString(),this.state.end_date,this.state.type,this.state.amount,this.state.interval,this.state.currentValueCurrency,this.state.currentValue,this.state.editingIndex).then(()=>{
             this.getAll();
         })
-        this.setState({ editing: false, isOpen: false,start_date: "",end_date: "",type: "",amount: "",title:"",description:"",interval:"",currency: currency,category: category })
+        this.setState({ editing: false, isOpen: false,start_date: "",end_date: "",type: "",amount: "",title:"",description:"",interval:""})
         this.getAll();
     }
   render() {
-    function sumProperty(arr, type) {
+    function sumProperty(arr) {
       return arr.reduce((total, obj) => {
-        if (typeof obj[type] === "string") {
+        if (typeof obj["type"] === "string") {
+         // console.log( obj["type"]);
           if (
             obj["type"] === "Fixed Income" ||
             obj["type"] === "Recurring Income"
           )
-            return total + Number(obj[type]);
-          else return total - Number(obj[type]);
+            return total + obj["amount"];
+          else return total - obj["amount"];
         }
-        return total + obj[type];
+        return total;// + obj[type];
       }, 0);
     }
-    let totalAmount = sumProperty(this.state.list, "amount").toFixed(2);
+    let totalAmount = sumProperty(this.state.list).toFixed(2);
     console.log(totalAmount);
 
-    function sumIncome(arr, type) {
+    function sumIncome(arr) {
       return arr.reduce((total, obj) => {
-        if (typeof obj[type] === "string") {
+        console.log( "income", obj["type"]);
+        if (typeof obj["type"] === "string") {
           if (
             obj["type"] === "Fixed Income" ||
             obj["type"] === "Recurring Income"
-          )
-            return total + Number(obj[type]);
+          ){
+            console.log(total + obj["amount"])
+            return total + Number(obj["amount"]);
+          }
+           // return total + Number(obj["amount"]);
           else return total;
         }
-        return total + obj[type];
+        else
+        return total ;//+ obj[type];
       }, 0);
     }
-    let totalIncome = sumIncome(this.state.list, "amount").toFixed(2);
+    let totalIncome = sumIncome(this.state.list).toFixed(2);
     console.log(totalIncome);
 
-    function sumExpense(arr, type) {
+    function sumExpense(arr) {
       return arr.reduce((total, obj) => {
-        if (typeof obj[type] === "string") {
+        if (typeof obj["type"] === "string") {
           if (
             obj["type"] === "Fixed Expense" ||
             obj["type"] === "Recurring Expense"
           )
-            return total - Number(obj[type]);
+            return total + obj["amount"];
           else return total;
         }
-        return total + obj[type];
+        else
+        return total;// + obj[type];
       }, 0);
     }
-    let totalExpense = sumExpense(this.state.list, "amount").toFixed(2);
+    let totalExpense = sumExpense(this.state.list).toFixed(2);
     console.log(totalExpense);
 
     return (
@@ -222,24 +242,30 @@ export default class Transactions extends Component {
                         event.preventDefault();
                       }}
                     >
-                      <Form.Field>
+                      {/* <Form.Field>
                         <input
                         placeholder="Enter Start Date"
                           type="datetime-local"
                           value={this.state.start_date}
                           onChange={e => this.startDate(e)}/>
-                      </Form.Field>
+                      </Form.Field> */}
 
+                      {/* */}
+                       <Form.Field>
+                       <DatePicker
+                      dateFormat="dd/MM/yyyy"
+                      placeholderText="Click to select a date"
+                        selected={this.state.start_date}
+                        onChange={e => this.startDate(e)}/>
+                      </Form.Field>
 
                       <Form.Field>
-                        <input
-                        placeholder="Enter End Date"
-                          type="datetime-local"
-                          value={this.state.end_date}
-                          onChange={e => this.endDate(e)}
-                        />
+                       <DatePicker
+                      dateFormat="dd/MM/yyyy"
+                      placeholderText="Click to select a date"
+                        selected={this.state.end_date}
+                        onChange={e => this.endDate(e)}/>
                       </Form.Field>
-
 
                       <Form.Field>
                         <Input
@@ -267,7 +293,7 @@ export default class Transactions extends Component {
                       </Form.Field>) : null}
                         <Form.Field>
                         <Dropdown
-                          options={this.state.category}
+                          options={this.state.categories}
                           placeholder="Choose a Category"
                           search
                           selection
@@ -308,7 +334,7 @@ export default class Transactions extends Component {
 
                       <Form.Field>
                         <Dropdown
-                          options={this.state.currency}
+                          options={this.state.currencies}
                           placeholder="Choose a currency"
                           search
                           selection
@@ -320,7 +346,7 @@ export default class Transactions extends Component {
                       {this.state.editing ? (
                         <Button
                           negative
-                          onClick={e =>
+                          onClick={() =>
                             this.updateTransaction() && this.handleClose
                           }
                         >
@@ -329,7 +355,7 @@ export default class Transactions extends Component {
                       ) : (
                         <Button
                           positive
-                          onClick={e =>
+                          onClick={() =>
                             this.addTransaction() && this.handleClose
                           }
                         >
@@ -344,7 +370,7 @@ export default class Transactions extends Component {
           </div>
           <div className="container__table">
           <Transition.Group animation='scale' duration={500}>
-            {this.state.list.map((transaction, index) => (
+            {this.state.list.map((transaction) => (
               <List key={transaction.id}>
                 <List.Item>
                   <TransactionsTable id={transaction.id} value={transaction} deleteTransaction={this.deleteTransaction} editTransaction={this.editTransaction} />
