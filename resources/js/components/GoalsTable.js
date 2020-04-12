@@ -14,7 +14,7 @@ const GoalsTable = props => {
                     <Button
                         icon
                         floated="right"
-                        onClick={() => props.editGoal(props.id)}
+                        onClick={() => props.editTransaction(props.id)}
                     >
                         {" "}
                         <Icon name="edit" />
@@ -22,7 +22,7 @@ const GoalsTable = props => {
                     <Button
                         icon
                         floated="right"
-                        onClick={() => props.deleteGoal(props.id)}
+                        onClick={() => props.deleteTransaction(props.id)}
                     >
                         {" "}
                         <Icon name="delete" />
