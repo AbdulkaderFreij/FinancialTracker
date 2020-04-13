@@ -4,11 +4,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 class Transaction extends Model
 {
-    protected $fillable = ['start_date', 'end_date', 'amount', 'title', 'description', 'type', 'interval', 'currencies_id', 'categories_id', 'users_id'];
+    protected $fillable = ['start_date', 'end_date', 'amount', 'title', 'description', 'type', 'interval', 
+    'currencies_id', 'categories_id', 'users_id'];
 
     public function category()
     {
-        return $this->belongsTo(Category::class, 'categories_id');
+        return $this->hasOne(Category::class, 'id','categories_id');
     }
 
     public function user()
@@ -18,7 +19,7 @@ class Transaction extends Model
 
     public function currency()
     {
-        return $this->belongsTo(Currency::class, 'currencies_id');
+        return $this->hasOne(Currency::class, 'id', 'currencies_id');
     }
 }
 

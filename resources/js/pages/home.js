@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Transition, List, Grid, Icon} from "semantic-ui-react";
+import { Transition, List, Grid, Icon, Table} from "semantic-ui-react";
 import "./Transactions.css";
 import {getTransactions} from '../../js/api/functionsList';
 import { getCategories,  getCurrencies } from '../api/functionsList';
@@ -33,7 +33,7 @@ export default class Dashboard extends Component {
         this.getAll();
     }
 
-    getAll=async () => {
+    getAll= async() => {
         const categories =  await getCategories();
         const currencies = await getCurrencies();
         console.log(currencies);
@@ -98,29 +98,52 @@ export default class Dashboard extends Component {
             <h1 className="transaction-item">Transactions</h1>
           </div>
           <div className="container__table">
-          <Transition.Group animation='scale' duration={500}>
+          <Table celled compact definition>
+    <Table.Header fullWidth>
+      <Table.Row>
+        <Table.HeaderCell>SN</Table.HeaderCell>
+        <Table.HeaderCell>Start Date</Table.HeaderCell>
+        <Table.HeaderCell>End Date</Table.HeaderCell>
+        <Table.HeaderCell>Interval</Table.HeaderCell>
+        <Table.HeaderCell>Type</Table.HeaderCell>
+        <Table.HeaderCell>Category</Table.HeaderCell>
+        <Table.HeaderCell>amount</Table.HeaderCell>
+        <Table.HeaderCell>Currency</Table.HeaderCell>
+      </Table.Row>
+    </Table.Header>
+    
             {this.state.list.map((transaction) => (
-              <List key={transaction.id}>
-                <List.Item>
-                <Grid columns={7} textAlign="center">
-    {JSON.stringify(transaction.value)}
-    <Grid.Column>{transaction.id}</Grid.Column>
-    <Grid.Column>{transaction.title}</Grid.Column>
-    <Grid.Column>{transaction.type === 'Fixed Income' || transaction.type === 'Recurring Income' ? <Icon name='arrow left'/> : transaction.type === 'Fixed Expense' || transaction.type === 'Recurring Expense' ? <Icon name='arrow right'/> : null}</Grid.Column>
-    <Grid.Column>{transaction.categories_id.name}</Grid.Column>
-    <Grid.Column>{transaction.type === 'Fixed Income' || transaction.type === 'Recurring Income' ? `+ ${transaction.amount}` : transaction.type === 'Fixed Expense' || transaction.type === 'Recurring Expense' ? `- ${transaction.amount}` : null }</Grid.Column>
-    <Grid.Column>{transaction.currencies_id.symbol}</Grid.Column>
-  </Grid>
-                </List.Item>
-              </List>
-            ))}
-            </Transition.Group>
+                <Table.Body key={transaction.id}>
+        <Table.Row>
+     <Table.Cell> {transaction.id} </Table.Cell>
+     <Table.Cell>{transaction.start_date}</Table.Cell>
+     <Table.Cell>{transaction.end_date}</Table.Cell>
+     <Table.Cell>{transaction.interval}</Table.Cell>
+     <Table.Cell>{transaction.type}</Table.Cell>
+     <Table.Cell>{transaction.categories_id.name}</Table.Cell>
+     <Table.Cell>{transaction.amount}</Table.Cell>
+     <Table.Cell>{transaction.currencies_id.code}</Table.Cell>
+  </Table.Row>
+  </Table.Body>
+  ))}
+  </Table>
           </div>
         </div>
         <div className="total-amount">
-        <h2>Total Income:{totalIncome}</h2>
-        <h2>Total Expense:{totalExpense}</h2>
-        <h2>Savings:{totalAmount}</h2>
+        <Table celled compact definition collapsing>
+    <Table.Header fullWidth>
+      <Table.Row>
+        <Table.HeaderCell>Total Income</Table.HeaderCell>
+        <Table.HeaderCell>Total Expense</Table.HeaderCell>
+        <Table.HeaderCell>Savings</Table.HeaderCell>
+        </Table.Row>
+    </Table.Header>
+    <Table.Body>
+            <Table.Cell> {totalIncome} </Table.Cell>
+            <Table.Cell> {totalExpense} </Table.Cell>
+            <Table.Cell> {totalAmount} </Table.Cell>
+    </Table.Body>
+    </Table>
         </div>
       </>
     );

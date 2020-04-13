@@ -26,7 +26,7 @@ class CurrencyController extends Controller
         return $currency;
     }
 
-    public function create() {
+    public function create() { //this is not needed
         return 'submit by setting form here';
     }
 
@@ -46,7 +46,7 @@ public function store(Request $request){
   
   public function update(Request $request,$id){
     if($request->isMethod('post')){
-      $currencie= Currency::find($id);
+      $currencie= Currency::findOrFail($id);
       $currencie->country = $request->input('country');
       $currencie->symbol = $request->input('symbol');
       $currencie->code = $request->input('code');

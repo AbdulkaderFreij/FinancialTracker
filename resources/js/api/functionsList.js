@@ -66,7 +66,7 @@ export const addItemTransaction = (title, description, start_date, end_date, typ
       type: type,
       amount: amount,
       interval: interval,
-      categories_id: 5,
+      categories_id: currentValue, // thats it
       currencies_id: 5
     },
     {

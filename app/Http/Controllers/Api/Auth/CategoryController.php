@@ -14,7 +14,7 @@ class CategoryController extends Controller
     public function index()
     {
 
-        $categories = Category::all();
+        $categories = Category::where('users_id', auth()->user()->id)->get();
         return response()->json($categories);
     }
 
@@ -24,18 +24,19 @@ class CategoryController extends Controller
             'name' => 'required',
         ]);
         $inputs = $request->toArray();
-        $inputs['users_id'] = $request->user()->id;
+        $inputs['users_id'] = auth()->user()->id;
         $category = Category::create($inputs);
         return response()->json(['message'=> 'category created',
         'category' => $category]);
     }
 
-    public function show(Category $category)
+    public function show($id)
     {
-        return $category;
+        $category = Category::where('id', $id)->first();
+        return $category; //Hmmmmm alright whats the best way
     }
 
-    public function update(Request $request, Category $category)
+    public function update(Request $request, Category $category) //you can do it here too if you wnat
     {
         $request->validate([
             'name' => 'required',

@@ -12,8 +12,8 @@ class TransactionController extends Controller
 
     public function index()
     {
-        error_log('Some message here.');
-        $transaction = Transaction::where(["users_id"=>auth()->user()->id])->get();        
+        error_log('Some message here.'); //? i was testing what is auth()->user()->id ok this should work
+        $transaction = Transaction::where(["users_id"=>auth()->user()->id])->with('category','currency')->get();        
         error_log($transaction);
         return response()->json($transaction);
     }

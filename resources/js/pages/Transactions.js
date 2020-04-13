@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import TransactionsTable from "../components/TransactionsTable";
-import { Header, Image, Modal, Transition,Form, Dropdown, Input, List, Button} from "semantic-ui-react";
+import { Header, Image, Modal, Transition,Form, Dropdown, Input, List, Button, Table} from "semantic-ui-react";
 import "./Transactions.css";
 import {getTransactions, addItemTransaction, deleteItemTransaction, updateItemTransaction} from '../../js/api/functionsList';
 import logo from '../images/logo.svg';
@@ -103,7 +103,7 @@ export default class Transactions extends Component {
         this.setState({ currentValueCurrency: value });
 
         addTransaction(){
-          addItemTransaction(this.state.title,this.state.description,this.state.start_date,this.state.end_date,this.state.type,this.state.amount,this.state.interval,this.state.currentValueCurrency,this.state.currentValue ).then(()=>{
+          addItemTransaction(this.state.title,this.state.description,this.state.start_date.toLocaleDateString(),this.state.end_date.toLocaleDateString(),this.state.type,this.state.amount,this.state.interval,this.state.currentValueCurrency,this.state.currentValue ).then(()=>{
               this.getAll()
           })
           this.setState({isOpen: false,start_date: "",end_date: "",type: "",amount: "",title:"",description:"",interval:""})
@@ -134,7 +134,7 @@ export default class Transactions extends Component {
       };
 
       updateTransaction=()=>{
-        updateItemTransaction(this.state.title,this.state.description,this.state.start_date.toLocaleDateString(),this.state.end_date,this.state.type,this.state.amount,this.state.interval,this.state.currentValueCurrency,this.state.currentValue,this.state.editingIndex).then(()=>{
+        updateItemTransaction(this.state.title,this.state.description,this.state.start_date.toLocaleDateString(),this.state.end_date.toLocaleDateString(),this.state.type,this.state.amount,this.state.interval,this.state.currentValueCurrency,this.state.currentValue,this.state.editingIndex).then(()=>{
             this.getAll();
         })
         this.setState({ editing: false, isOpen: false,start_date: "",end_date: "",type: "",amount: "",title:"",description:"",interval:""})
@@ -250,21 +250,43 @@ export default class Transactions extends Component {
             </div>
           </div>
           <div className="container__table">
-          <Transition.Group animation='scale' duration={500}>
+          <Table celled compact definition>
+    <Table.Header fullWidth>
+      <Table.Row>
+        <Table.HeaderCell />
+        <Table.HeaderCell>SN</Table.HeaderCell>
+        <Table.HeaderCell>Start Date</Table.HeaderCell>
+        <Table.HeaderCell>End Date</Table.HeaderCell>
+        <Table.HeaderCell>Interval</Table.HeaderCell>
+        <Table.HeaderCell>Type</Table.HeaderCell>
+        <Table.HeaderCell>Category</Table.HeaderCell>
+        <Table.HeaderCell>amount</Table.HeaderCell>
+        <Table.HeaderCell>Currency</Table.HeaderCell>
+      </Table.Row>
+    </Table.Header>
             {this.state.list.map((transaction) => (
-              <List key={transaction.id}>
-                <List.Item>
+                <Table.Body>
                   <TransactionsTable id={transaction.id} value={transaction} deleteTransaction={this.deleteTransaction} editTransaction={this.editTransaction} />
-                </List.Item>
-              </List>
+              </Table.Body>
             ))}
-            </Transition.Group>
+           </Table>
           </div>
         </div>
         <div className="total-amount">
-        <h2>Total Income:{totalIncome}</h2>
-        <h2>Total Expense:{totalExpense}</h2>
-        <h2>Savings:{totalAmount}</h2>
+        <Table celled compact definition collapsing>
+    <Table.Header fullWidth>
+      <Table.Row>
+        <Table.HeaderCell>Total Income</Table.HeaderCell>
+        <Table.HeaderCell>Total Expense</Table.HeaderCell>
+        <Table.HeaderCell>Savings</Table.HeaderCell>
+        </Table.Row>
+    </Table.Header>
+    <Table.Body>
+            <Table.Cell> {totalIncome} </Table.Cell>
+            <Table.Cell> {totalExpense} </Table.Cell>
+            <Table.Cell> {totalAmount} </Table.Cell>
+    </Table.Body>
+    </Table>
         </div>
       </>
     );
