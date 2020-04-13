@@ -12,8 +12,10 @@ class TransactionController extends Controller
 
     public function index()
     {
-        $transactions = Transaction::all();
-        return response()->json($transactions);
+        error_log('Some message here.');
+        $transaction = Transaction::where(["users_id"=>auth()->user()->id])->get();        
+        error_log($transaction);
+        return response()->json($transaction);
     }
 
     public function store(Request $request)

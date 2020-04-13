@@ -1,12 +1,8 @@
 import React, { Component } from "react";
-import TransactionsTable from "../components/TransactionsTable";
-import { Header, Image, Modal, Transition,Form, Dropdown, Input, List, Button} from "semantic-ui-react";
+import { Transition, List, Grid, Icon} from "semantic-ui-react";
 import "./Transactions.css";
-import {getTransactions, addItemTransaction, deleteItemTransaction, updateItemTransaction} from '../../js/api/functionsList';
-import logo from '../images/logo.svg';
-import { getCategories, addItemCategory, getCurrencies } from '../api/functionsList';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import {getTransactions} from '../../js/api/functionsList';
+import { getCategories,  getCurrencies } from '../api/functionsList';
 import {useAuth} from '../context/auth';
 
 const WelcomeUser = () => {

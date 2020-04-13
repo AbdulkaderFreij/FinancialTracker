@@ -24,7 +24,11 @@ onChange=e=>{
     this.setState({[e.target.name]:e.target.value})
 }
 
-getAll=()=>{
+handleChangeCurrency = (e, { value }) =>
+this.setState({ currentValueCurrency: value });
+
+getAll= async()=>{
+    const currencies = await getCurrencies();
     getCategories().then(data=>{
         this.setState({name:'', categories:[...data]}, ()=>console.log(this.state.categories))
     })
@@ -45,7 +49,7 @@ onUpdate=(e)=>{
     })
     this.setState({
         name:'',
-        editDisabled:''
+        editing:''
     })
     this.getAll();
 }
@@ -54,11 +58,11 @@ onEdit=(itemid,e)=>{
     e.preventDefault();
     const data=[...this.state.categories]
     data.forEach((value,index)=>{
-        if(value.id===itemid){
+        if(value.key===itemid){
             this.setState({
-                id:value.id,
+                key:value.key,
                 name: value.name,
-                editDisabled:true,
+                editing:true,
             })
         }
     })
@@ -105,8 +109,8 @@ onDelete=(val,e)=>{
 
                                 </td>
                                 <td className="text-right">
-                                    <button className="btn btn-info ar-1" href="" disable={this.state.editing.toString()} onClick={this.onEdit.bind(this, value.id)}>Edit</button>
-                                    <button className="btn btn-danger" href="" disable={this.state.editing.toString()} onClick={this.onDelete.bind(this, value.id)}>Delete</button>
+                                    <button className="btn btn-info ar-1" href="" disable={this.state.editing.toString()} onClick={this.onEdit.bind(this, value.key)}>Edit</button>
+                                    <button className="btn btn-danger" href="" disable={this.state.editing.toString()} onClick={this.onDelete.bind(this, value.key)}>Delete</button>
                                 </td>
                             </tr>
                         ))}

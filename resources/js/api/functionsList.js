@@ -41,6 +41,7 @@ export const getCurrencies = () => {
       headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token}
     })
     .then(res => {
+      console.log(res.data);
       const currencies = res.data.map(currency => {
         return {
           key: currency.id,

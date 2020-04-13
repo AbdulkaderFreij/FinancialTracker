@@ -13,7 +13,7 @@ function GuestRoute ({ component: Component, title, ...rest }) {
     <Route
       {...rest}
       render={props => authenticated
-        ? <Redirect to={{ pathname: '/home', state: { from: props.location } }} />
+        ? <Redirect to={{ pathname: '/dashboard', state: { from: props.location } }} />
         : <Component {...props} />
       }
     />

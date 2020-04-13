@@ -129,7 +129,6 @@ export default class Transactions extends Component {
           title:transaction.title,
           description:transaction.description,
           interval: transaction.interval,
-          currency: currency,
           editingIndex: id
         });
       };
