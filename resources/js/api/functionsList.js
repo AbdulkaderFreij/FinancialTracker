@@ -24,9 +24,8 @@ export const getCategories = () => {
     .then(res => {
       const categories = res.data.map(category => {
         return {
-          key: category.id,
-          text: category.name,
-          value: category.id
+          id: category.id,
+          name: category.name,
         };
       });
       return categories;
@@ -35,7 +34,6 @@ export const getCategories = () => {
 
 export const getCurrencies = () => {
   const token = getToken();
-
   return axios
     .get('/api/currencies', {
       headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token}
@@ -44,9 +42,10 @@ export const getCurrencies = () => {
       console.log(res.data);
       const currencies = res.data.map(currency => {
         return {
-          key: currency.id,
-          text: currency.symbol,
-          value: currency.id
+          id: currency.id,
+          country: currency.country,
+          symbol: currency.symbol,
+          code: currency.code
         };
       });
       return currencies;
@@ -54,7 +53,7 @@ export const getCurrencies = () => {
 };
 
 // eslint-disable-next-line camelcase
-export const addItemTransaction = (title, description, start_date, end_date, type, amount, interval, currentValue, currentValueCurrency) => {
+export const addItemTransaction = (title, description, start_date, end_date, type, amount, interval, categories_id, currencies_id) => {
   const token = getToken();
 
   return axios
@@ -66,8 +65,8 @@ export const addItemTransaction = (title, description, start_date, end_date, typ
       type: type,
       amount: amount,
       interval: interval,
-      categories_id: currentValue, // thats it
-      currencies_id: 5
+      categories_id: categories_id,
+      currencies_id: currencies_id
     },
     {
       headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token}
@@ -124,9 +123,8 @@ export const deleteItemCategory = id => {
 };
 
 // eslint-disable-next-line camelcase
-export const updateItemTransaction = (title, description, start_date, end_date, type, amount, interval, currentValue, currentValueCurrency, id) => {
+export const updateItemTransaction = (title, description, start_date, end_date, type, amount, interval, categories_id, currencies_id, id) => {
   const token = getToken();
-
   return axios
     .put(`/api/transactions/${id}`, {
       title: title,
@@ -136,8 +134,8 @@ export const updateItemTransaction = (title, description, start_date, end_date, 
       type: type,
       amount: amount,
       interval: interval,
-      categories_id: 1,
-      currencies_id: 1
+      categories_id: categories_id,
+      currencies_id: currencies_id
     },
     {
       headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token}

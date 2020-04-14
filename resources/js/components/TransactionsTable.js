@@ -30,7 +30,6 @@ const TransactionsTable = (props) => (
   <Table.Row>
 
     <Table.Cell collapsing>
-      {JSON.stringify(props.value)}
       <div className="flex" >
         <Button  icon floated="right" onClick={() => props.editTransaction(props.id)}> <Icon name='edit'/></Button>
         <Button  icon floated="right" onClick={() => props.deleteTransaction(props.id)}> <Icon name='delete'/></Button>
@@ -43,7 +42,7 @@ const TransactionsTable = (props) => (
     <Table.Cell>{props.value.type}</Table.Cell>
     <Table.Cell>{props.value.category.name}</Table.Cell>
     <Table.Cell>{props.value.amount}</Table.Cell>
-    <Table.Cell>{props.value.currency.code}</Table.Cell>
+    <Table.Cell>{props.value.currency ? props.value.currency.code : ''}</Table.Cell>
   </Table.Row>
 
 );

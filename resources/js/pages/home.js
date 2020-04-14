@@ -113,8 +113,8 @@ export default class Dashboard extends Component {
     </Table.Header>
     
             {this.state.list.map((transaction) => (
-                <Table.Body key={transaction.id}>
-        <Table.Row>
+     <Table.Body key={transaction.id}>
+     <Table.Row>
      <Table.Cell> {transaction.id} </Table.Cell>
      <Table.Cell>{transaction.start_date}</Table.Cell>
      <Table.Cell>{transaction.end_date}</Table.Cell>

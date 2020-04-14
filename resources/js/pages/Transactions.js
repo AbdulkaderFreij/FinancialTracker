@@ -21,7 +21,7 @@ export default class Transactions extends Component {
           description:"",
           interval: "",
           isRecurring: false,
-          categories: [],
+          categories: [], //this is the state
           currencies: [],
           editing: false,
           editingIndex: -1,
@@ -34,12 +34,18 @@ export default class Transactions extends Component {
     }
 
     getAll=async () => {
-        const categories =  await getCategories();
+        const categories =  await getCategories()
+        const formated_categories = categories.map(category => {
+            return {text: category.name, value: category.id, key: category.id}
+        });
         const currencies = await getCurrencies();
+        const formated_currencies = currencies.map(currency => {
+            return {text: currency.symbol, value: currency.id, key: currency.id}
+        });
         console.log(currencies);
         console.log(categories);
          getTransactions().then(data=>{
-             this.setState({start_date:'',end_date:'',type:'',amount:'',title:'',description:'',interval:'', list:[...data], categories, currencies}, ()=>console.log(this.state.list))
+             this.setState({start_date:'',end_date:'',type:'',amount:'',title:'',description:'',interval:'', list:[...data], categories: formated_categories, currencies: formated_currencies}, ()=>console.log(this.state.list))
          })
        }
 
@@ -93,17 +99,17 @@ export default class Transactions extends Component {
           const category = await addItemCategory(value);
 
         this.setState(prevState => ({
-          categories: [{ key: category.id, text: category.name, value: category.id }, ...prevState.categories]
+          categories: [{ text: category.name, value: category.id , key: category.id }, ...prevState.categories]
         }));
-      };
+      };//this is the function
 
-      handleChange = (e, { value }) => this.setState({ currentValue: value });
+      handleChange = (e, { value }) => this.setState({ currentValue: value }, ()=>console.log(this.state.currentValue));
 
       handleChangeCurrency = (e, { value }) =>
         this.setState({ currentValueCurrency: value });
 
         addTransaction(){
-          addItemTransaction(this.state.title,this.state.description,this.state.start_date.toLocaleDateString(),this.state.end_date.toLocaleDateString(),this.state.type,this.state.amount,this.state.interval,this.state.currentValueCurrency,this.state.currentValue ).then(()=>{
+          addItemTransaction(this.state.title,this.state.description,this.state.start_date.toLocaleDateString(),this.state.end_date.toLocaleDateString(),this.state.type,this.state.amount,this.state.interval,this.state.currentValue,this.state.currentValueCurrency ).then(()=>{
               this.getAll()
           })
           this.setState({isOpen: false,start_date: "",end_date: "",type: "",amount: "",title:"",description:"",interval:""})
@@ -134,7 +140,7 @@ export default class Transactions extends Component {
       };
 
       updateTransaction=()=>{
-        updateItemTransaction(this.state.title,this.state.description,this.state.start_date.toLocaleDateString(),this.state.end_date.toLocaleDateString(),this.state.type,this.state.amount,this.state.interval,this.state.currentValueCurrency,this.state.currentValue,this.state.editingIndex).then(()=>{
+        updateItemTransaction(this.state.title,this.state.description,this.state.start_date.toLocaleDateString(),this.state.end_date.toLocaleDateString(),this.state.type,this.state.amount,this.state.interval,this.state.currentValue, this.state.currentValueCurrency, this.state.editingIndex).then(()=>{
             this.getAll();
         })
         this.setState({ editing: false, isOpen: false,start_date: "",end_date: "",type: "",amount: "",title:"",description:"",interval:""})
@@ -232,6 +238,7 @@ export default class Transactions extends Component {
                         <input type="text" placeholder="Enter a description" value={this.state.description} onChange={e => this.description(e)}/>
                       </Form.Field>
                       <Form.Field>
+                      {this.state.currentValueCurrency}
                         <Dropdown options={this.state.currencies} placeholder="Choose a currency" search selection fluid value={this.state.currentValueCurrency} onChange={this.handleChangeCurrency}/>
                       </Form.Field>
                       {this.state.editing ? (
@@ -265,7 +272,7 @@ export default class Transactions extends Component {
       </Table.Row>
     </Table.Header>
             {this.state.list.map((transaction) => (
-                <Table.Body>
+                <Table.Body key={transaction.id}>
                   <TransactionsTable id={transaction.id} value={transaction} deleteTransaction={this.deleteTransaction} editTransaction={this.editTransaction} />
               </Table.Body>
             ))}
